@@ -13845,9 +13845,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-stl-viewer@workspace:.":
+"react-stl-viewer-improved@workspace:.":
   version: 0.0.0-use.local
-  resolution: "react-stl-viewer@workspace:."
+  resolution: "react-stl-viewer-improved@workspace:."
   dependencies:
     "@react-three/fiber": 8.9.1
     "@rollup/plugin-commonjs": ^22.0.0

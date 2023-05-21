@@ -1,8 +1,8 @@
 {
-  "name": "react-stl-viewer",
-  "version": "2.2.5",
-  "description": "react component for visualizing 3d models in the browser using three.js",
-  "author": "Gabriel Musat",
+  "name": "react-stl-viewer-improved",
+  "version": "1.0.1",
+  "description": "improved react component for visualizing 3d models in the browser using three.js - forked from gabotechs (Gabriel Musat)",
+  "author": "Thomas Kim",
   "license": "MIT",
   "devDependencies": {
     "@rollup/plugin-commonjs": "^22.0.0",
@@ -63,11 +63,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/GabrielMusat/react-stl-viewer.git"
+    "url": "git+https://github.com/thomasjuhoonkim/react-stl-viewer-improved.git"
   },
-  "homepage": "https://github.com/GabrielMusat/react-stl-viewer",
+  "homepage": "https://github.com/thomasjuhoonkim/react-stl-viewer-improved",
   "maintainers": [
-    "Gabriel Musat (https://github.com/GabrielMusat)"
+    "Gabriel Musat (https://github.com/GabrielMusat)",
+    "Thomas Kim (https://github.com/thomasjuhoonkim"
   ],
   "keywords": [
     "stl",

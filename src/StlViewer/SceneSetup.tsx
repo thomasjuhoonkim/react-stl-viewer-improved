@@ -48,30 +48,25 @@ export interface SceneSetupProps {
   floorProps?: FloorProps
 }
 
-const SceneSetup: React.FC<SceneSetupProps> = (
-  {
-    url,
-    extraHeaders,
-    shadows = false,
-    showAxes = false,
-    orbitControls = false,
-    onFinishLoading = () => {},
-    modelProps: {
-      ref,
-      scale = 1,
-      positionX,
-      positionY,
-      rotationX = 0,
-      rotationY = 0,
-      rotationZ = 0,
-      color = 'grey'
-    } = {},
-    floorProps: {
-      gridWidth,
-      gridLength
-    } = {}
-  }
-) => {
+const SceneSetup: React.FC<SceneSetupProps> = ({
+  url,
+  extraHeaders,
+  shadows = false,
+  showAxes = false,
+  orbitControls = false,
+  onFinishLoading = () => {},
+  modelProps: {
+    ref,
+    scale = 1,
+    positionX,
+    positionY,
+    rotationX = 0,
+    rotationY = 0,
+    rotationZ = 0,
+    color = 'grey'
+  } = {},
+  floorProps: { gridWidth, gridLength } = {}
+}) => {
   const [mesh, setMesh] = useState<Mesh>()
 
   const [meshDims, setMeshDims] = useState<ModelDimensions>({
@@ -81,29 +76,35 @@ const SceneSetup: React.FC<SceneSetupProps> = (
     boundingRadius: 0
   })
 
-  const [cameraInitialPosition, setCameraInitialPosition] = useState<CameraInitialPosition>()
+  const [cameraInitialPosition, setCameraInitialPosition] =
+    useState<CameraInitialPosition>()
 
-  const [modelCenter, setModelCenter] = useState<[number, number, number]>([0, 0, 0])
+  const [modelCenter, setModelCenter] = useState<[number, number, number]>([
+    0, 0, 0
+  ])
   const [sceneReady, setSceneReady] = useState(false)
   useEffect(() => {
     setSceneReady(false)
   }, [url])
 
-  const geometry = useLoader(
-    STLLoader,
-    url,
-    (loader) => loader.setRequestHeader(extraHeaders ?? {})
+  const geometry = useLoader(STLLoader, url, (loader) =>
+    loader.setRequestHeader(extraHeaders ?? {})
   )
 
-  function onLoaded (dims: ModelDimensions, mesh: Mesh): void {
+  function onLoaded(dims: ModelDimensions, mesh: Mesh): void {
     setMesh(mesh)
     const { width, length, height, boundingRadius } = dims
     setMeshDims(dims)
-    setModelCenter([positionX ?? width/2, positionY ?? length/2, height/2])
+    setModelCenter([
+      positionX ?? width / 2,
+      positionY ?? length / 2,
+      height / 2
+    ])
     const maxGridDimension = Math.max(gridWidth ?? 0, gridLength ?? 0)
-    const distance = maxGridDimension > 0
-      ? maxGridDimension
-      : boundingRadius * CAMERA_POSITION_DISTANCE_FACTOR
+    const distance =
+      maxGridDimension > 0
+        ? maxGridDimension
+        : boundingRadius * CAMERA_POSITION_DISTANCE_FACTOR
     setCameraInitialPosition({
       latitude: INITIAL_LATITUDE,
       longitude: INITIAL_LONGITUDE,
@@ -114,12 +115,12 @@ const SceneSetup: React.FC<SceneSetupProps> = (
   }
 
   useEffect(() => {
-    if ((ref == null) || (mesh == null)) return
+    if (ref == null || mesh == null) return
     ref.current = {
-      save: () => new Blob(
-        [new STLExporter().parse(mesh, { binary: true })],
-        { type: 'application/octet-stream' }
-      ),
+      save: () =>
+        new Blob([new STLExporter().parse(mesh, { binary: true })], {
+          type: 'application/octet-stream'
+        }),
       model: mesh
     }
   }, [mesh, ref])
@@ -128,49 +129,48 @@ const SceneSetup: React.FC<SceneSetupProps> = (
     const mesh = scene.getObjectByName('mesh') as Mesh
     const group = scene.getObjectByName('group') as Group
     const bbox = new Box3().setFromObject(mesh)
-    const height = bbox.max.z-bbox.min.z
-    group.position.z = height/2
+    const height = bbox.max.z - bbox.min.z
+    group.position.z = height / 2
   })
 
   const modelPosition: [number, number, number] = [
-    positionX ?? (meshDims.width*scale)/2,
-    positionY ?? (meshDims.length*scale)/2,
+    positionX ?? (meshDims.width * scale) / 2,
+    positionY ?? (meshDims.length * scale) / 2,
     0
   ]
 
   return (
-        <>
-            <scene background={BACKGROUND}/>
-            {sceneReady && showAxes && <axesHelper scale={[50, 50, 50]}/>}
-            {(cameraInitialPosition != null) && <Camera
-                initialPosition={cameraInitialPosition}
-                center={modelCenter}
-            />}
-            <Model3D
-                name={'group'}
-                meshProps={{ name: 'mesh' }}
-                scale={scale}
-                geometry={geometry}
-                position={modelPosition}
-                rotation={[rotationX, rotationY, rotationZ]}
-                visible={sceneReady}
-                materialProps={{ color }}
-                onLoaded={onLoaded}
-            />
-            <Floor
-                width={gridWidth ?? gridLength}
-                length={gridLength ?? gridWidth}
-                visible={sceneReady}
-                noShadow={!shadows}
-                offset={FLOOR_DISTANCE}
-            />
-            <Lights
-                distance={LIGHT_DISTANCE}
-                offsetX={modelPosition[0]}
-                offsetY={modelPosition[1]}
-            />
-            {sceneReady && orbitControls && <OrbitControls target={modelCenter} />}
-        </>
+    <>
+      <scene background={BACKGROUND} />
+      {sceneReady && showAxes && <axesHelper scale={[50, 50, 50]} />}
+      {cameraInitialPosition != null && (
+        <Camera initialPosition={cameraInitialPosition} center={modelCenter} />
+      )}
+      <Model3D
+        name={'group'}
+        meshProps={{ name: 'mesh' }}
+        scale={scale}
+        geometry={geometry}
+        position={modelPosition}
+        rotation={[rotationX, rotationY, rotationZ]}
+        visible={sceneReady}
+        materialProps={{ color }}
+        onLoaded={onLoaded}
+      />
+      <Floor
+        width={gridWidth ?? gridLength}
+        length={gridLength ?? gridWidth}
+        visible={sceneReady}
+        noShadow={!shadows}
+        offset={FLOOR_DISTANCE}
+      />
+      <Lights
+        distance={LIGHT_DISTANCE}
+        offsetX={modelPosition[0]}
+        offsetY={modelPosition[1]}
+      />
+      {sceneReady && orbitControls && <OrbitControls target={modelCenter} />}
+    </>
   )
 }
 
