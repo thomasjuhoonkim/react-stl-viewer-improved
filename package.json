@@ -52,7 +52,7 @@
   "types": "lib/index.d.ts",
   "scripts": {
     "build": "rm -rf lib && tsc && rollup -c",
-    "build-windows": "tsc && rollup -c",
+    "build-windows": "rd /s /q lib && tsc && rollup -c",
     "test": "jest --passWithNoTests",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
