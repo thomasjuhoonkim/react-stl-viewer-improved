@@ -1,6 +1,6 @@
 {
   "name": "react-stl-viewer-improved",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "improved react component for visualizing 3d models in the browser using three.js - forked from gabotechs (Gabriel Musat)",
   "author": "Thomas Kim",
   "license": "MIT",
@@ -52,6 +52,7 @@
   "types": "lib/index.d.ts",
   "scripts": {
     "build": "rm -rf lib && tsc && rollup -c",
+    "build-windows": "tsc && rollup -c",
     "test": "jest --passWithNoTests",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
