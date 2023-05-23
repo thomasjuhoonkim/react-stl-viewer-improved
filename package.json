@@ -1,6 +1,6 @@
 {
   "name": "react-stl-viewer-improved",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "improved react component for visualizing 3d models in the browser using three.js - forked from gabotechs (Gabriel Musat)",
   "author": "Thomas Kim",
   "license": "MIT",
